@@ -1,3 +1,4 @@
+// HC: great job on the detailed comments that you’ve added in this file!
 // constants for eventListeners and data
 const hamburger = document.querySelector('.hamburger');
 const navigation = document.querySelector('nav');
@@ -16,7 +17,7 @@ let arraySelector = '';
 let players = [
     { id: 'playerOne', player: 'player 1', score: 0 },
     { id: 'playerTwo', player: 'player 2', score: 0 }
-]; 
+];
 
 // games objects > arrays > objects; possibly change to class for refactor
 const games = {
@@ -34,25 +35,25 @@ const games = {
     ],
     stars: [
         { name: 'Aquarius', img: 'images/constellations/aquarius.png' },
-        { name: 'Aries', img: 'images/constellations/aries.png' }, 
-        { name: 'Cancer', img: 'images/constellations/cancer.png' }, 
-        { name: 'Capricorn', img: 'images/constellations/capricorn.png' }, 
-        { name: 'Cassiopeia', img: 'images/constellations/cassiopeia.png' }, 
-        { name: 'Centaurus', img: 'images/constellations/centaurus.png' }, 
-        { name: 'Gemini', img: 'images/constellations/gemini.png' }, 
-        { name: 'Leo', img: 'images/constellations/leo.png' }, 
-        { name: 'Libra', img: 'images/constellations/libra.png' }, 
-        { name: 'Orion', img: 'images/constellations/orion.png' }, 
-        { name: 'Pegasus', img: 'images/constellations/pegasus.png' }, 
-        { name: 'Pisces', img: 'images/constellations/pisces.png' }, 
-        { name: 'Sagittarius', img: 'images/constellations/sagittarius.png' }, 
-        { name: 'Scorpius', img: 'images/constellations/scorpius.png' }, 
-        { name: 'Taurus', img: 'images/constellations/taurus.png' }, 
-        { name: 'Ursa Major', img: 'images/constellations/ursa-major.png' }, 
-        { name: 'Ursa Minor', img: 'images/constellations/ursa-minor.png' }, 
+        { name: 'Aries', img: 'images/constellations/aries.png' },
+        { name: 'Cancer', img: 'images/constellations/cancer.png' },
+        { name: 'Capricorn', img: 'images/constellations/capricorn.png' },
+        { name: 'Cassiopeia', img: 'images/constellations/cassiopeia.png' },
+        { name: 'Centaurus', img: 'images/constellations/centaurus.png' },
+        { name: 'Gemini', img: 'images/constellations/gemini.png' },
+        { name: 'Leo', img: 'images/constellations/leo.png' },
+        { name: 'Libra', img: 'images/constellations/libra.png' },
+        { name: 'Orion', img: 'images/constellations/orion.png' },
+        { name: 'Pegasus', img: 'images/constellations/pegasus.png' },
+        { name: 'Pisces', img: 'images/constellations/pisces.png' },
+        { name: 'Sagittarius', img: 'images/constellations/sagittarius.png' },
+        { name: 'Scorpius', img: 'images/constellations/scorpius.png' },
+        { name: 'Taurus', img: 'images/constellations/taurus.png' },
+        { name: 'Ursa Major', img: 'images/constellations/ursa-major.png' },
+        { name: 'Ursa Minor', img: 'images/constellations/ursa-minor.png' },
         { name: 'Virgo', img: 'images/constellations/virgo.png' }
     ]
-}
+};
 
 // menu open/close event
 hamburger.addEventListener('click', openMenu);
@@ -61,8 +62,10 @@ let navSwitch = 0;
 
 function openMenu() {
     const bars = hamburger.children;
-    
+
     if (navSwitch === 0) {
+        // HC: consider consolidating lines 69-73 into a helper method and you can re-use the helper function
+        // for lines 75-79
         navigation.style.display = 'initial';
         bars[0].classList.add('top');
         bars[1].classList.add('middle');
@@ -91,12 +94,12 @@ selectGame.addEventListener('click', function(evt) {
     evt.preventDefault();
     // selection criteria based on nav link text
     arraySelector = evt.target.innerText;
-    
+
     // load new board
     loadBoard(arraySelector.toLowerCase());
     // switch menu state to closed
     openMenu(evt);
-    inPlay = []
+    inPlay = [];
 });
 
 // on click load about or learn more
@@ -104,8 +107,8 @@ selectSub.addEventListener('click', function(evt) {
     evt.preventDefault();
     // selection criteria based on nav link text
     arraySelector = evt.target.innerText;
-    
-    if(arraySelector === 'About') {
+
+    if (arraySelector === 'About') {
         // load about board
         loadAbout();
     } else if (arraySelector === 'Learn More') {
@@ -116,10 +119,10 @@ selectSub.addEventListener('click', function(evt) {
 });
 
 // flip card
-board.addEventListener('click', (evt) => {
+board.addEventListener('click', evt => {
     evt.preventDefault();
     // Thanks to Kenny for the if statement wrapper idea to stop console log error that didn't affect the game but was annoying me
-    if(evt.target.classList.value === 'card back' && inPlay.length < 2) {
+    if (evt.target.classList.value === 'card back' && inPlay.length < 2) {
         // get array location via data-id as set in createCards function
         const card = evt.target.getAttribute('id');
         // create img and title elements
@@ -137,7 +140,7 @@ board.addEventListener('click', (evt) => {
         evt.target.appendChild(frontImg);
         evt.target.appendChild(frontTitle);
         // check for match
-        if(inPlay.length === 2) {
+        if (inPlay.length === 2) {
             checkMatch();
         }
     }
@@ -151,13 +154,15 @@ function loadBoard(arrayQuery) {
     const newBoard = games[arrayQuery];
     // push unique card pairs to cardsOnBoard array
     for (let i = 0; cardsOnBoard.length < 8; i++) {
-        let randomIndex = Math.floor(Math.random()*newBoard.length);
+        let randomIndex = Math.floor(Math.random() * newBoard.length);
         // filtered array for testing if card pair already exists
-        let testArray = cardsOnBoard.filter(card => card.name === newBoard[randomIndex].name);
+        let testArray = cardsOnBoard.filter(
+            card => card.name === newBoard[randomIndex].name
+        );
         // first pair auto populates
         if (cardsOnBoard.length < 0) {
             cardsOnBoard.push(newBoard[randomIndex], newBoard[randomIndex]);
-        // subsequent pairs test against testArray
+            // subsequent pairs test against testArray
         } else if (testArray.length <= 0) {
             cardsOnBoard.push(newBoard[randomIndex], newBoard[randomIndex]);
         }
@@ -170,8 +175,8 @@ function loadBoard(arrayQuery) {
 
 // shuffle gameBoard array
 function shuffle(array) {
-    for (let i = array.length-1; i > 0; i--) {
-        let randomIndex = Math.floor(Math.random()*array.length);
+    for (let i = array.length - 1; i > 0; i--) {
+        let randomIndex = Math.floor(Math.random() * array.length);
 
         let upNext = array[i];
         array[i] = array[randomIndex];
@@ -184,7 +189,7 @@ function createCards(array) {
     for (let card in array) {
         // define attribute variables
         let newCard = document.createElement('div');
-        
+
         // build card
         newCard.setAttribute('id', card); // gameBoard[card].name
         newCard.setAttribute('class', 'card back');
@@ -195,16 +200,16 @@ function createCards(array) {
 }
 
 // clear gameBoard in View & cardsOnBoard array
-function clearBoard(){
+function clearBoard() {
     // empty dom game-board div
-    while(board.firstElementChild) {
+    while (board.firstElementChild) {
         board.removeChild(board.firstElementChild);
     }
     // empty gameBoard array
     cardsOnBoard = [];
 }
 
-function checkMatch () {
+function checkMatch() {
     const firstIndex = inPlay[0];
     const secondIndex = inPlay[1];
     const firstCard = cardsOnBoard[firstIndex].name;
@@ -212,15 +217,17 @@ function checkMatch () {
 
     if (firstCard === secondCard) {
         // if match iterate point for current player & go again
-        document.getElementById(`${players[0].id}`).innerHTML = `${players[0].player}: ${players[0].score+=1}`;
+        document.getElementById(`${players[0].id}`).innerHTML = `${
+            players[0].player
+        }: ${(players[0].score += 1)}`;
         // check win scenario
         win();
         // change player, could turn this off for more of a challenge
         turn();
-    // if no match
+        // if no match
     } else if (firstCard != secondCard) {
         // and flip back
-        setTimeout(flipBack, 1000); 
+        setTimeout(flipBack, 1000);
         // Thanks to Kenny for providing W3S starting point for setTimeout review
     }
 }
@@ -231,7 +238,9 @@ function turn() {
     players.push(prevPlayer);
     // switch player emphasize on score board
     document.getElementById(`${players[0].id}`).classList.add('current-player');
-    document.getElementById(`${players[1].id}`).classList.remove('current-player');
+    document
+        .getElementById(`${players[1].id}`)
+        .classList.remove('current-player');
     // clear in play array
     inPlay = [];
 }
@@ -240,12 +249,12 @@ function flipBack() {
     // find parent elements based on current selections
     let firstCard = board.children[`${inPlay[0]}`];
     let secondCard = board.children[`${inPlay[1]}`];
-    
+
     // remove images & titles children
-    while(firstCard.firstElementChild) {
+    while (firstCard.firstElementChild) {
         firstCard.removeChild(firstCard.firstElementChild);
     }
-    while(secondCard.firstElementChild) {
+    while (secondCard.firstElementChild) {
         secondCard.removeChild(secondCard.firstElementChild);
     }
 
@@ -258,14 +267,17 @@ function flipBack() {
 }
 
 function win() {
-    let boardChildren = [...board.children]; 
+    // HC: nice job using the spread operator to create a copy of the board!
+    let boardChildren = [...board.children];
     // Thanks Kenny for showing me HTMLcollection to Array using spread operator
-    let testArray = boardChildren.filter(card => `${card.classList.value}` === 'card');
-    
+    let testArray = boardChildren.filter(
+        card => `${card.classList.value}` === 'card'
+    );
+
     // all cards flipped and matched
     if (testArray.length === cardsOnBoard.length) {
         award();
-    }    
+    }
 }
 
 function award() {
@@ -273,7 +285,9 @@ function award() {
     let award = document.createElement('div');
     award.setAttribute('class', 'award winner');
     let announcement = document.createElement('h2');
-    
+
+    // HC: Instead of repeatedly accessing the elements at position 0 and 1 of players, store these in variables
+    // i.e., let playerOne = players[0]
     // player with most points wins
     if (players[0].score > players[1].score) {
         announcement.innerText = `${players[0].player} WINS!`;
@@ -313,4 +327,5 @@ function loadLearnMore() {
 
 // default start board load
 loadBoard('planets');
+// HC: remove console.log calls that you used during debugging and don’t need anymore
 // console.log(cardsOnBoard);
